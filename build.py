@@ -105,15 +105,14 @@ with open(os.path.join(OUT_DIR, 'elements.json'), 'w', encoding='utf-8') as f:
     json.dump({'n': names, 'e': emojis}, f, ensure_ascii=False, separators=(',', ':'))
 print(f"elements.json written {os.path.getsize(os.path.join(OUT_DIR,'elements.json'))/1e6:.1f} MB ({time.time()-t0:.1f}s)", flush=True)
 
-# recipes.data (gzip binary)
+# recipes.data (binaire brut — GitHub Pages le gzippe automatiquement à la diffusion)
 t0 = time.time()
 header = struct.pack('<II', N, M)
 blob = header + offsets.tobytes() + b2.tobytes() + c2.tobytes()
-raw_size = len(blob)
-with gzip.open(os.path.join(OUT_DIR, 'recipes.data'), 'wb', compresslevel=9) as f:
+with open(os.path.join(OUT_DIR, 'recipes.data'), 'wb') as f:
     f.write(blob)
-gz_size = os.path.getsize(os.path.join(OUT_DIR, 'recipes.data'))
-print(f"recipes.data: raw {raw_size/1e6:.1f} MB -> gzip {gz_size/1e6:.1f} MB ({time.time()-t0:.1f}s)", flush=True)
+raw_size = len(blob)
+print(f"recipes.data: raw {raw_size/1e6:.1f} MB ({time.time()-t0:.1f}s)", flush=True)
 
 # meta.json
 meta = {

@@ -62,7 +62,9 @@
 
     setLoader(30, 'Chargement des combinaisons…');
     const resp = await fetch('data/recipes.data');
-    const buf = await streamAndDecompress(resp);
+    // taille décodée attendue = en-tête(8) + offsets(4*(N+1)) + 2 * 4*M
+    const expected = 8 + 4 * (N + 1) + 8 * meta.M;
+    const buf = await readAll(resp.body, expected);
     setLoader(80, 'Préparation du terrain…');
 
     const dv = new DataView(buf);
@@ -75,27 +77,23 @@
     M = m;
   }
 
-  // Lit le flux réponse en comptant les octets téléchargés, puis décompresse (gzip).
-  async function streamAndDecompress(resp) {
-    const total = +resp.headers.get('Content-Length') || 0;
-    const reader = resp.body.getReader();
+  // Lit le flux réponse (déjà décompressé par le navigateur) en suivant la progression.
+  async function readAll(body, expected) {
+    const reader = body.getReader();
+    const chunks = [];
     let received = 0;
-    const src = new ReadableStream({
-      start(controller) {
-        function pump() {
-          return reader.read().then(({ done, value }) => {
-            if (done) { controller.close(); return; }
-            received += value.length;
-            if (total > 0) setLoader(30 + (received / total) * 45, 'Chargement des combinaisons… ' + Math.round(received / 1048576) + ' Mo');
-            controller.enqueue(value);
-            return pump();
-          });
-        }
-        return pump();
-      }
-    });
-    const stream = src.pipeThrough(new DecompressionStream('gzip'));
-    return await new Response(stream).arrayBuffer();
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      received += value.length;
+      chunks.push(value);
+      setLoader(30 + (received / expected) * 45,
+        'Chargement des combinaisons… ' + Math.round(received / 1048576) + ' Mo');
+    }
+    const buf = new Uint8Array(received);
+    let off = 0;
+    for (const c of chunks) { buf.set(c, off); off += c.length; }
+    return buf.buffer;
   }
 
   /* ---------- recherche de combinaison ---------- */
