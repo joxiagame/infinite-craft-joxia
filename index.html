@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Infinite Craft Joxia</title>
+<meta name="description" content="Infinite Craft Joxia — 793 068 éléments, 6,6 millions de combinaisons. Mélange l'Eau, le Feu, le Vent et la Terre pour tout découvrir.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+  <!-- Écran de chargement -->
+  <div id="loader" role="status" aria-live="polite">
+    <div class="loader-mark" aria-hidden="true">
+      <span class="lm-a">💧</span><span class="lm-plus">+</span><span class="lm-b">🔥</span>
+    </div>
+    <h1 class="loader-title">Infinite Craft <span>Joxia</span></h1>
+    <div class="loader-bar"><div id="loaderFill" class="loader-fill"></div></div>
+    <p id="loaderText" class="loader-text">Chargement des éléments…</p>
+    <p class="loader-sub">793 068 éléments · 6 669 547 combinaisons</p>
+  </div>
+
+  <!-- Application -->
+  <div id="app" hidden>
+    <header class="topbar">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <circle cx="16" cy="20" r="11" fill="none" stroke="url(#g1)" stroke-width="3"/>
+          <circle cx="24" cy="20" r="11" fill="none" stroke="url(#g2)" stroke-width="3"/>
+          <path d="M20 12 L21.5 17 L26 18.5 L21.5 20 L20 25 L18.5 20 L14 18.5 L18.5 17 Z" fill="#ffd76a"/>
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>
+            <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f472b6"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient>
+          </defs>
+        </svg>
+        <div class="brand-txt">
+          <h1>Infinite Craft <span>Joxia</span></h1>
+          <p>Mélange deux éléments pour en créer un nouveau</p>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-val" id="statDisc">4</span>
+          <span class="stat-lbl">découvertes</span>
+        </div>
+        <div class="stat">
+          <span class="stat-val" id="statTotal">793&nbsp;068</span>
+          <span class="stat-lbl">éléments</span>
+        </div>
+        <button class="icon-btn" id="resetBtn" title="Tout réinitialiser" aria-label="Tout réinitialiser">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="canvas" id="canvas" aria-label="Zone de travail">
+        <div class="hint" id="hint">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span>Glisse un élément sur un autre, ou sélectionne-les un à un pour les combiner.</span>
+        </div>
+      </section>
+
+      <aside class="sidebar" id="sidebar">
+        <div class="side-head">
+          <label class="search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input id="search" type="search" placeholder="Rechercher un élément…" autocomplete="off">
+          </label>
+          <button class="icon-btn" id="toggleSide" title="Replier" aria-label="Replier la liste">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="side-count" id="sideCount">0 éléments</div>
+        <div class="side-list" id="sideList" role="list"></div>
+      </aside>
+    </main>
+
+    <div class="mobile-tab" id="mobileTab">
+      <span id="mobileCount">4 découvertes</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Couche de particules -->
+  <div id="fx" aria-hidden="true"></div>
+
+  <script src="game.js?v=1"></script>
+</body>
+</html>
