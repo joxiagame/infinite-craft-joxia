@@ -11,7 +11,8 @@
   const app = $('app'), canvas = $('canvas'), hint = $('hint');
   const sideList = $('sideList'), sideCount = $('sideCount'), search = $('search');
   const toggleSideBtn = $('toggleSide'), sidebar = $('sidebar'), mobileTab = $('mobileTab');
-  const mobileCount = $('mobileCount');
+  const mobileCount = $('mobileCount'), sideReopen = $('sideReopen'), layout = $('layout');
+  const SIDE_KEY = 'joxia-icraft-side-collapsed';
   const statDisc = $('statDisc'), statTotal = $('statTotal');
   const resetBtn = $('resetBtn'), toast = $('toast'), fx = $('fx'), trash = $('trash');
 
@@ -582,10 +583,18 @@
   window.addEventListener('pointercancel', onPointerCancel);
   canvas.addEventListener('pointerdown', (e) => { if (e.target === canvas) deselect(); });
   search.addEventListener('input', () => { searchTerm = search.value.trim().toLowerCase(); renderSideList(); });
+  // Liste repliée (ordinateur) : la languette « Éléments » sur le bord droit permet de la rouvrir.
+  function setSideCollapsed(c) {
+    sidebar.classList.toggle('collapsed', c);
+    layout.classList.toggle('side-collapsed', c);
+    try { localStorage.setItem(SIDE_KEY, c ? '1' : '0'); } catch (e) {}
+  }
   toggleSideBtn.addEventListener('click', () => {
     if (isMobile()) sidebar.classList.remove('open');
-    else sidebar.classList.toggle('collapsed');
+    else setSideCollapsed(!sidebar.classList.contains('collapsed'));
   });
+  sideReopen.addEventListener('click', () => { setSideCollapsed(false); search.focus(); });
+  try { if (localStorage.getItem(SIDE_KEY) === '1') setSideCollapsed(true); } catch (e) {}
   mobileTab.addEventListener('click', () => sidebar.classList.add('open'));
 
   (async function boot() {
