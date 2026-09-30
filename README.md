@@ -16,9 +16,11 @@ Mélange l'**Eau**, le **Feu**, le **Vent** et la **Terre** pour découvrir de n
 ## Jouer
 
 1. Glisse un élément sur un autre **ou** sélectionne-les un à un (clic).
-2. Si la combinaison existe, un nouvel élément apparaît. Sinon, « Rien » ne se forme.
-3. Une **première découverte** déclenche une célébration.
-4. Consulte et recherche toutes tes découvertes dans la liste de droite.
+2. Si la combinaison existe, les deux ingrédients **fusionnent** en un nouvel élément. Sinon, « Rien » ne se forme.
+3. Clique (ou glisse) un élément de la liste pour le poser sur le plateau, autant de fois que tu veux (ex. Eau + Eau).
+4. **Corbeille** (en bas à gauche) : dépose un élément dessus, ou sur la liste, pour le jeter. Clic sur la corbeille = jeter l'élément sélectionné, ou vider le plateau. Touche Suppr sur un élément = le jeter.
+5. Une **première découverte** déclenche une célébration.
+6. Consulte et recherche toutes tes découvertes dans la liste de droite.
 
 ## Lancer en local
 

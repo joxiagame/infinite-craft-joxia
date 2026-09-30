@@ -107,13 +107,15 @@ body {
   display: flex;
   flex-direction: column;
 }
+/* display:flex écrase l'attribut hidden : sans ça, le jeu apparaît sous l'écran de chargement */
+#app[hidden] { display: none; }
 
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 14px 20px;
+  padding: 14px 20px 14px 122px; /* place pour le bouton « Quitter » du hub (fixé en haut à gauche) */
   border-bottom: 1px solid var(--border);
   background: rgba(11, 16, 36, .55);
   backdrop-filter: blur(14px);
@@ -198,9 +200,11 @@ body {
 
 .hint {
   position: absolute;
-  top: 50%;
+  top: 14px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
+  max-width: calc(100% - 28px);
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -294,6 +298,50 @@ body {
 }
 
 .orb.enter { animation: pop .4s cubic-bezier(.34, 1.56, .64, 1); }
+.orb.leave { animation: vanish .2s ease-in forwards; }
+@keyframes vanish {
+  to { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+}
+
+/* ===== Corbeille ===== */
+.trash {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  border: 1px dashed rgba(255, 255, 255, .22);
+  background: rgba(11, 16, 36, .7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .18s, color .18s, border-color .18s, background .18s, box-shadow .18s;
+}
+.trash svg { width: 20px; height: 20px; flex: none; }
+.trash:hover, .trash.armed { color: var(--text); border-color: rgba(255, 107, 122, .55); }
+.trash:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.canvas.is-dragging .trash { color: var(--text); border-color: rgba(255, 107, 122, .55); transform: scale(1.06); }
+.trash.hot {
+  color: #fff;
+  background: rgba(255, 107, 122, .28);
+  border-style: solid;
+  border-color: var(--danger);
+  box-shadow: 0 0 30px -4px rgba(255, 107, 122, .6);
+  transform: scale(1.14) !important;
+}
+.trash.bump { animation: bump .35s ease; }
+@keyframes bump {
+  30% { transform: scale(1.18) rotate(-8deg); }
+  60% { transform: scale(.95) rotate(5deg); }
+}
 .orb.first .orb-face { animation: first-glow 1.4s ease-out; }
 @keyframes pop {
   0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
@@ -389,6 +437,7 @@ body {
   contain-intrinsic-size: 48px;
 }
 .side-row:hover { background: var(--surface-2); }
+.side-row { user-select: none; -webkit-user-select: none; cursor: grab; }
 .side-row:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; }
 .side-row .sr-ico {
   width: 34px;
@@ -486,7 +535,7 @@ body {
 
 /* ===== Responsive ===== */
 @media (max-width: 760px) {
-  .topbar { padding: 10px 12px; }
+  .topbar { padding: 10px 12px 10px 116px; }
   .brand-txt p { display: none; }
   .brand-txt h1 { font-size: 16px; }
   .brand-mark { width: 32px; height: 32px; }
@@ -532,6 +581,9 @@ body {
   .orb .orb-face { width: 66px; height: 66px; font-size: 32px; }
   .orb .orb-mono { font-size: 28px; }
   .orb .orb-name { font-size: 11px; max-width: 80px; }
+  .trash { left: 12px; bottom: 12px; padding: 12px; }
+  .trash span { display: none; }
+  .hint { font-size: 12px; padding: 9px 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
