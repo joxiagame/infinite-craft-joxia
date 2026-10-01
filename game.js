@@ -524,6 +524,8 @@
     const list = [];
     orbs.forEach((o) => list.push({ id: o.id, x: o.x, y: o.y }));
     try { localStorage.setItem(SAVE_KEY, JSON.stringify({ discovered, orbs: list })); } catch (e) {}
+    // nombre d'éléments découverts → classement du hub (tracker.js)
+    if (window.joxiaScore) window.joxiaScore(discovered.length);
   }
 
   const validIds = (arr) => Array.isArray(arr) && arr.length >= 4 &&
